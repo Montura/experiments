@@ -214,7 +214,7 @@ $ cd experiments
       }
       {
         ThreadPool tp { 10 };
-        tp.post([&volume, &n]() {
+        tp.post([&volume, n]() {
             for (int i = 0; i < n; ++i)
                 volume.set(i, 0);
         });
