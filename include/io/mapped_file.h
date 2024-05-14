@@ -23,7 +23,7 @@ namespace btree {
         int64_t m_pos;
         int64_t m_size;
         int64_t m_capacity;
-        MappedRegion* m_mapped_region;
+        std::unique_ptr<MappedRegion> m_mapped_region;
     public:
         const std::string path;
 

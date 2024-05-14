@@ -53,7 +53,6 @@ namespace file {
  * 4. See impl of BOOST_MAPPED_REGION dtor:
     - https://github.com/steinwurf/boost/blob/master/boost/interprocess/mapped_region.hpp#L555
 */
-        delete m_mapped_region;
         std::error_code error_code;
         fs::resize_file(path, m_capacity, error_code);
         if (error_code)
