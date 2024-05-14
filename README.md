@@ -174,11 +174,11 @@ $ cd experiments
          btree::Storage<int, const char*> blob_storage;
          auto volume = blob_storage.open_volume("../blob_storage.txt", 2);
          int len = 10;
-         auto blob = std::make_unique<char*>(new char[len + 1]);
+         auto blob = std::make_unique<char*>(len + 1);
          for (int i = 0; i < len; ++i) {
-             (*blob)[i] = (char)(i + 1);
+             blob[i] = (char)(i + 1);
          }
-         volume.set(0, *blob, len);
+         volume.set(0, blob.get(), len);
   
          std::optional<const char*> opt = volume.get(0);
          auto ptr = opt.value();
