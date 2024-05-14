@@ -104,6 +104,7 @@ namespace utils {
 
     void validate(bool expression, const std::string_view& err_msg, const std::string& file_path) {
         if (!expression)
+            // todo: fix "Крэш с гарантией, если `err_msg` не заканчивается `\0`: [MP review]"
             throw std::logic_error(err_msg.data() + file_path);
     }
 }

@@ -55,8 +55,10 @@ namespace file {
 */
         std::error_code error_code;
         fs::resize_file(path, m_capacity, error_code);
-        if (error_code)
+        if (error_code) {
+            // todo: fix "может кидать исключения при выводе ошибки" [MP review]
             std::cerr << "Can't resize file: " + path << std::endl;
+        }
     }
 
     template <typename K, typename V>

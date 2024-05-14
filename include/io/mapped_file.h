@@ -25,6 +25,9 @@ namespace btree {
         int64_t m_capacity;
         std::unique_ptr<MappedRegion> m_mapped_region;
     public:
+        // todo: fix
+        //  "Использование `std::string` для имени файла под Windows означает невозможность работы с путями
+        //   содержащими Unicode символы." [MP review]
         const std::string path;
 
         MappedFile(const std::string& fn, const int64_t bytes_num);
