@@ -110,6 +110,9 @@ namespace file {
     template <typename T>
     T MappedFile<K,V>::read_next_primitive() {
         static_assert(std::is_arithmetic_v<T>);
+        if (m_pos + sizeof(T) > m_capacity) {
+            throw std::logic_error("Read form mapped file is out of it range!");
+        }
         auto* value_begin = m_mapped_region->address_by_offset(m_pos);
         m_pos += sizeof(T);
         return *(reinterpret_cast<T*>(value_begin));
