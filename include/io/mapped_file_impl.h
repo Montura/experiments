@@ -9,6 +9,9 @@ namespace fs = std::filesystem;
 
 namespace btree {
 namespace file {
+    // todo: could be replaced with std::filesystem::resizeFile(...)?
+    //  Problems with MSVC (look at ~MappedFile())
+#if 0
     void seek_file_to_offset(const std::string& path, const std::ios_base::openmode file_open_mode, const int64_t offset) {
         std::filebuf buf;
         auto* p_file_buf = buf.open(path, file_open_mode);
@@ -19,6 +22,7 @@ namespace file {
             buf.sputc(0);
         buf.close();
     }
+#endif
 }
     using namespace utils;
 
@@ -28,7 +32,8 @@ namespace file {
     {
         bool file_exists = fs::exists(path);
         if (!file_exists) {
-            file::seek_file_to_offset(path, std::ios_base::out | std::ios_base::trunc, bytes_num);
+            std::ofstream file(path);
+            fs::resize_file(path, bytes_num);
             m_size = m_capacity = bytes_num;
         } else {
             m_size = m_capacity = static_cast<int64_t>(fs::file_size(path));
@@ -179,7 +184,8 @@ namespace file {
     void MappedFile<K,V>::resize(int64_t new_size, bool shrink_to_fit) {
         // Can't use std::filesystem::resize_file(), see file_mapping_impl.h: ~MappedFile() {...}
         m_size = shrink_to_fit ? new_size : std::max(scale_current_size(), new_size);
-        file::seek_file_to_offset(path, std::ios_base::in | std::ios_base::out, m_size);
+        std::filesystem::resize_file(path, m_size);
+//        file::seek_file_to_offset(path, std::ios_base::in | std::ios_base::out, m_size);
         m_mapped_region->remap(path);
     }
 
